@@ -32,7 +32,7 @@ namespace QOIDecoder
                 {
                     if (arg.StartsWith('-'))
                     {
-                        foreach (char opt in args[0].Substring(1))
+                        foreach (char opt in arg.Substring(1))
                         {
                             if (opt == 'h')
                             {
