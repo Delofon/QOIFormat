@@ -142,13 +142,15 @@ namespace QOIDecoder
                         case (byte)Tags.QOI_OP_LUMA >> 6:
                         {
                             byte b2 = byteData[++i];
-                            int diff_green = ((byte)(b1 << 2) >> 6) - 32;
+
+                            int diff_green = ((byte)(b1 << 2) >> 2) - 32;
                             int dr_dg      =  (byte)(b2 >> 4) - 8;
                             int db_dg      = ((byte)(b2 << 4) >> 4) - 8;
-                            int cur_g = (byte)(previous.g + diff_green) % 256;
-                            int cur_r = (byte)(dr_dg + diff_green + previous.r) % 256;
-                            int cur_b = (byte)(db_dg + diff_green + previous.b) % 256;
-                            Colour newCol = new Colour((byte)cur_r, (byte)cur_g, (byte)cur_b, previous.a);
+
+                            byte cur_g = (byte)(previous.g + diff_green);
+                            byte cur_r = (byte)(dr_dg + diff_green + previous.r);
+                            byte cur_b = (byte)(db_dg + diff_green + previous.b);
+                            Colour newCol = new Colour(cur_r, cur_g, cur_b, previous.a);
                             img[imgIndex] = newCol;
                             Verbose($"QOI_OP_LUMA: {diff_green} {dr_dg} {db_dg}");
                             break;
