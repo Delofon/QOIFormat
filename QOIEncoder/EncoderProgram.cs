@@ -12,9 +12,13 @@ namespace QOIEncoder
     class EncoderProgram
     {
         static bool verbose = false;
+        static DateTime t1;
 
         static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.ProcessExit += ProcessExitMethod;
+            t1 = DateTime.UtcNow;
+
             if (args.Length == 0)
             {
                 PrintUsage();
@@ -196,6 +200,13 @@ namespace QOIEncoder
         }
 
         static void Verbose(string str) { if (verbose) Console.WriteLine(str); }
+
+        static void ProcessExitMethod(object sender, EventArgs args)
+        {
+            DateTime t2 = DateTime.UtcNow;
+            TimeSpan time = t2 - t1;
+            Console.WriteLine($"Finished in {time.TotalMilliseconds} ms.");
+        }
 
         static void PrintUsage()
         {
